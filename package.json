@@ -1,7 +1,7 @@
 {
-  "name": "sam-js",
+  "name": "disco-ai-storyteller",
   "version": "0.3.1",
-  "description": "SAM - The Software Automatic Mouth",
+  "description": "AI-powered Disco comedy storyteller with Pakistani stage-comedy mechanics and SAM.js retro text-to-speech",
   "author": "Christian Schiffler <c.schiffler@cyberspectrum.de>",
   "private": false,
   "main": "dist/samjs.min.js",
@@ -59,17 +59,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/discordier/sam.git"
+    "url": "git+https://github.com/imadeelnazar/disco.git"
   },
   "keywords": [
+    "disco",
+    "ai",
+    "comedy",
+    "storyteller",
+    "text-to-speech",
+    "sam",
+    "sam-js",
+    "pakistani-comedy",
+    "punjabi-stage-comedy",
     "speech",
-    "synthesis",
-    "retro",
-    "c64"
+    "retro"
   ],
   "license": "SEE LICENSE IN README.md",
   "bugs": {
-    "url": "https://github.com/discordier/sam/issues"
+    "url": "https://github.com/imadeelnazar/disco/issues"
   },
-  "homepage": "https://github.com/discordier/sam#readme"
+  "homepage": "https://github.com/imadeelnazar/disco#readme"
 }
