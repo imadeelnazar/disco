@@ -1,91 +1,167 @@
-# SAM Software Automatic Mouth
+# Disco AI Storyteller
 
-## What is SAM?
+**Disco** is an AI-powered comedy character built on top of the classic SAM.js retro text-to-speech engine.
 
-This is a vanilla Javascript port of the Text-To-Speech (TTS) software
-SAM (Software Automatic Mouth) for the Commodore C64 published in the
-year 1982 by Don't Ask Software (now SoftVoice, Inc.).
+He is poor, jobless, wildly confident, and completely convinced that every successful person around him owes at least part of that success to him.
 
-It is based on the adaption to C by
-[Stefan Macke](https://github.com/s-macke/SAM)
-and the refactorings by 
-[Vidar Hokstad](https://github.com/vidarh/SAM) and
-[8BitPimp](https://github.com/8BitPimp/SAM)
+His greatest historical achievement?
 
-It includes a Text-To-Phoneme converter called reciter and a
-Phoneme-To-Speech routine for the final output.
+> "I took them to Lahore."
 
-It aims for low memory impact and file size which is the reason I want
-to avoid the 
-[Emscripten conversion](http://simulationcorner.net/index.php?page=sam)
-by Stefan (which weights about 414kb).
+According to Disco, if he had never taken his friends to Lahore, none of them would have found jobs, moved abroad, bought cars, got married, started businesses, or become successful.
 
-For further details, refer to
-[retrobits.net](http://www.retrobits.net/atari/sam.shtml)
+Unfortunately, every problem in Disco's own life is also somehow his friends' fault.
 
-Some analytics of S.A.M. in general can be found in Artyom Skrobov's
-(@tyomitch) blog who also provided pretty insightful PRs.
-Visit his blog https://habr.com/ru/post/500764/ (russian)
-or the google translated version
-[here](https://habr-com.translate.goog/ru/post/500764/?_x_tr_sl=auto&_x_tr_tl=en).
+## What this project does
 
-## Usage
+The app turns a simple situation into an original English comedy monologue and then lets Disco tell the story using the retro SAM voice.
 
-Require the module via yarn: `yarn add sam-js`
+Example prompt:
 
-Use it in your program:
+> My friend got a job in Dubai and Disco claims it only happened because he once took him to Lahore.
 
-```javascript
-import SamJs from 'sam-js';
+The AI generates a new first-person Disco incident using:
 
-let sam = new SamJs();
+- Pakistani everyday-life observations
+- fast counter-jokes and escalating arguments
+- deliberate misunderstandings
+- self-roasts
+- callbacks
+- exaggerated revisionist history
+- character impressions
+- social satire
+- cheeky double meanings when enabled
+- Disco's permanent Lahore obsession
 
-// Play "Hello world" over the speaker.
-// This returns a Promise resolving after playback has finished.
-sam.speak('Hello world');
+The comedy mechanics are inspired by the tradition of Pakistani Punjabi stage comedy, but generated material is designed to be original rather than reproducing performers' routines verbatim.
 
-// Generate a wave file containing "Hello world" and download it.
-sam.download('Hello world');
+## Disco's character
 
-// Render the passed text as 8bit wave buffer array (Uint8Array).
-const buf8 = sam.buf8('Hello world');
+Disco believes:
 
-// Render the passed text as 32bit wave buffer array (Float32Array).
-const buf32 = sam.buf32('Hello world');
+- Every good thing in his friends' lives is partly his contribution.
+- Every bad thing in his own life is his friends' fault.
+- Taking somebody to Lahore counts as lifelong mentorship.
+- Being unemployed does not mean he lacks career expertise.
+- Having no money does not disqualify him from giving investment advice.
+- Having no successful business does not stop him from advising businessmen.
+- Losing an argument simply means the other person misunderstood his logic.
+
+Underneath all the nonsense, Disco is not cruel. His strongest jokes usually end with him losing more dignity than the person he was teasing.
+
+## Features
+
+- AI-generated English Disco stories
+- Short, Medium and Long story modes
+- Clean comedy mode
+- Cheeky / double-meaning mode
+- Surprise story topics
+- Editable generated script
+- Copy Script
+- SAM.js speech playback
+- Long-story speech chunking
+- Stop playback
+- WAV export
+- Adjustable speed, pitch, throat and mouth settings
+- Server-side OpenAI API integration
+- No API key exposed in browser code
+
+## Architecture
+
+```text
+Situation / Topic
+      |
+      v
+Disco Character Prompt
+      |
+      v
+OpenAI Responses API
+      |
+      v
+Original English Disco Story
+      |
+      v
+SAM.js Text-to-Speech
+      |
+      v
+Disco speaks
 ```
 
-### Typical voice values
+The original SAM synthesis engine remains isolated from the AI layer. The AI generates text only. The existing SAM.js engine then converts that text into speech.
 
-```
-DESCRIPTION          SPEED     PITCH     THROAT    MOUTH
-Elf                   72        64        110       160
-Little Robot          92        60        190       190
-Stuffy Guy            82        72        110       105
-Little Old Lady       82        32        145       145
-Extra-Terrestrial    100        64        150       200
-SAM                   72        64        128       128
+## Setup
+
+Install dependencies:
+
+```bash
+yarn
 ```
 
-## Original docs.
+Build SAM.js:
 
-I have bundled a copy of the original manual in this repository, see
-the [manual](docs/manual.md) file in the [docs](docs) directory.
+```bash
+yarn build
+```
 
-## License
+For AI story generation, configure the server environment:
 
-The software is a reverse-engineered version of a commercial software
-published more than 30 years ago. The current copyright holder is 
-SoftVoice, Inc. (www.text2speech.com)
+```bash
+OPENAI_API_KEY=your_api_key_here
+```
 
-Any attempt to contact the company failed. The website was last
-updated in the year 2009. The status of the original
-software can therefore best described as Abandonware
-(http://en.wikipedia.org/wiki/Abandonware)
+Optional model override:
 
-As long this is the case I cannot put my code under any specific open
-source software license Use it at your own risk.
+```bash
+DISCO_MODEL=gpt-5.6-luna
+```
 
-Contact
+The project includes a server-side endpoint at:
 
-If you have questions don' t hesitate to ask me. If you discovered some
-new knowledge about the code please file an issue.
+```text
+POST /api/disco-story
+```
+
+Opening `index.html` directly still allows manual SAM speech, but AI generation requires a deployment/runtime that supports the server-side API route.
+
+See [DISCO_SETUP.md](DISCO_SETUP.md) for implementation details.
+
+## Disco voice
+
+The current Disco voice uses SAM, the Software Automatic Mouth.
+
+Default Disco preset:
+
+```text
+Speed:  76
+Pitch:  58
+Throat: 138
+Mouth:  152
+```
+
+The intentionally retro sound gives Disco a strange, recognizable personality. The controls can be changed from the interface.
+
+## Original SAM.js foundation
+
+This repository is built from **SAM.js**, a JavaScript port of **SAM - Software Automatic Mouth**, originally published for the Commodore C64 by Don't Ask Software.
+
+The SAM.js implementation is based on work by Stefan Macke, Vidar Hokstad, 8BitPimp, Christian Schiffler / discordier, and project contributors.
+
+The original speech engine includes a text-to-phoneme reciter and phoneme-to-speech renderer.
+
+The original SAM documentation remains available in [docs/manual.md](docs/manual.md).
+
+## License and attribution
+
+The underlying SAM software is a reverse-engineered implementation of older commercial speech software. Its historical licensing status is unusual and the original SAM.js project describes it as abandonware.
+
+This project preserves that underlying engine and attribution. Use the SAM-derived portions with the same caution described by the upstream project.
+
+The original AI character, Disco-specific prompts, application UI, and integration code are additions in this repository.
+
+## Repository
+
+Created and developed as the home of the **Disco AI Storyteller**.
+
+Disco's version of the project history is simpler:
+
+> "The AI wrote the stories. SAM made the sound. But obviously the whole thing happened because I took everybody to Lahore."
