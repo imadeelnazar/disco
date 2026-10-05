@@ -1,142 +1,426 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>SAM: Software Automatic Mouth</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Disco - The Unemployed Kingmaker</title>
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111;
+      --card: #1a1a1a;
+      --muted: #aaa;
+      --line: #333;
+      --accent: #f7c948;
+      --accent2: #ff7a59;
+      --text: #f4f4f4;
+    }
+    * { box-sizing: border-box; }
     body {
-      max-width: 12cm;
+      margin: 0;
+      background: radial-gradient(circle at top, #25201a 0, var(--bg) 36rem);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    main {
+      width: min(920px, calc(100% - 28px));
       margin: 0 auto;
-      font-family: sans-serif;
-      box-sizing: content-box;
+      padding: 42px 0 64px;
     }
-    h1, h2 {
+    .hero {
       text-align: center;
+      margin-bottom: 26px;
     }
-    label, input {
-      display: inline-block;
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: .78rem;
     }
-    label { width: 30%}
-    input { width: 60%}
-    input[type="button"] { width: 49%; }
-    input[type="range"] { transform: rotate(180deg);}
-    table{width: 100%}
-    tr th {text-align: left}
-    a {
+    h1 {
+      margin: 9px 0 8px;
+      font-size: clamp(2.4rem, 7vw, 5.2rem);
+      line-height: .92;
+    }
+    .tagline {
+      max-width: 680px;
+      margin: 0 auto;
+      color: #d6d6d6;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+      gap: 18px;
+    }
+    .card {
+      background: rgba(26,26,26,.95);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.25);
+    }
+    h2 { margin: 0 0 16px; font-size: 1.1rem; }
+    label {
+      display: block;
+      margin: 14px 0 7px;
+      font-weight: 700;
+      font-size: .88rem;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      border: 1px solid #3c3c3c;
+      background: #101010;
+      color: var(--text);
+      border-radius: 11px;
+      padding: 12px 13px;
+      font: inherit;
+    }
+    textarea {
+      min-height: 300px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    button {
+      border: 0;
+      border-radius: 11px;
+      padding: 12px 15px;
+      font-weight: 800;
       cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    button:disabled { opacity: .45; cursor: wait; transform: none; }
+    .primary { background: var(--accent); color: #17120a; }
+    .secondary { background: #2b2b2b; color: var(--text); border: 1px solid #444; }
+    .danger { background: #4c2020; color: #fff; }
+    .actions {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 9px;
+      margin-top: 12px;
+    }
+    .hint, #status {
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.5;
+    }
+    #status { min-height: 1.3em; margin-top: 10px; }
+    .voice-control {
+      display: grid;
+      grid-template-columns: 78px 1fr 40px;
+      gap: 8px;
+      align-items: center;
+      margin: 12px 0;
+      font-size: .85rem;
+    }
+    input[type="range"] { width: 100%; }
+    .lore {
+      margin-top: 18px;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+    }
+    .lore strong { color: var(--accent); }
+    .quote {
+      margin: 12px 0 0;
+      padding: 12px 14px;
+      border-left: 3px solid var(--accent2);
+      background: #131313;
+      color: #ddd;
+      font-style: italic;
+      line-height: 1.5;
+    }
+    @media (max-width: 740px) {
+      .grid { grid-template-columns: 1fr; }
+      .actions { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-<h1> SAM Software Automatic Mouth</h1>
-<h2>What is SAM?</h2>
-<p>
-Sam is a very small Text-To-Speech (TTS) program written in Javascript,
-that runs on most popular platforms. It is an adaption to Javascript of
-the speech software SAM (Software Automatic Mouth) for the Commodore
-C64 published in the year 1982 by Don't Ask Software
-(now SoftVoice, Inc.). It includes a Text-To-Phoneme converter called
-reciter and a Phoneme-To-Speech routine for the final output.
-</p>
-<p>
-Currently compatible with Firefox, Chrome, Safari + iOS.
-The conversion was done by hand from the C source code by
-<a href="https://github.com/s-macke/SAM">Sebastian Macke</a>,
-and the refactored versions by
-<a href="https://github.com/vidarh/SAM">Vidar Hokstad</a> and
-<a href="https://github.com/8BitPimp/SAM">8BitPimp</a>
-</p>
+<main>
+  <section class="hero">
+    <div class="eyebrow">A completely reliable narrator</div>
+    <h1>DISCO</h1>
+    <p class="tagline">Poor. Jobless. Somehow responsible for everybody else's success. Give him a situation and he will tell you what "really" happened.</p>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Create a new Disco incident</h2>
+
+      <label for="topic">What happened this time?</label>
+      <input id="topic" type="text" maxlength="240"
+        value="My friend got a job in Dubai and Disco claims it only happened because he once took him to Lahore">
+
+      <div class="row">
+        <div>
+          <label for="length">Story length</label>
+          <select id="length">
+            <option value="short">Short - around 45 sec</option>
+            <option value="medium" selected>Medium - 60 to 90 sec</option>
+            <option value="long">Long - around 2 min</option>
+          </select>
+        </div>
+        <div>
+          <label for="spice">Comedy</label>
+          <select id="spice">
+            <option value="clean">Clean</option>
+            <option value="cheeky" selected>Cheeky / double meaning</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="generate" type="button">Generate Disco Story</button>
+        <button class="secondary" id="surprise" type="button">Surprise Me</button>
+        <button class="secondary" id="copy" type="button">Copy Script</button>
+      </div>
+
+      <label for="story">Disco's story</label>
+      <textarea id="story" spellcheck="true">My name is Disco. I am currently between jobs. The gap has lasted several years, but I believe in consistency.</textarea>
+
+      <div class="actions">
+        <button class="primary" id="speak" type="button">Speak as Disco</button>
+        <button class="danger" id="stop" type="button">Stop</button>
+        <button class="secondary" id="download" type="button">Download WAV</button>
+      </div>
+      <div id="status" aria-live="polite"></div>
+    </section>
+
+    <aside class="card">
+      <h2>Disco's voice</h2>
+      <p class="hint">SAM is intentionally retro. These controls change Disco's speed and vocal shape without changing his personality.</p>
+
+      <div class="voice-control"><span>Speed</span><input type="range" id="speed" min="35" max="130" value="76"><output id="speedValue">76</output></div>
+      <div class="voice-control"><span>Pitch</span><input type="range" id="pitch" min="20" max="110" value="58"><output id="pitchValue">58</output></div>
+      <div class="voice-control"><span>Throat</span><input type="range" id="throat" min="80" max="190" value="138"><output id="throatValue">138</output></div>
+      <div class="voice-control"><span>Mouth</span><input type="range" id="mouth" min="80" max="200" value="152"><output id="mouthValue">152</output></div>
+
+      <button class="secondary" id="resetVoice" type="button" style="width:100%;margin-top:8px">Reset Disco Voice</button>
+
+      <div class="lore">
+        <div class="hint"><strong>Permanent facts</strong></div>
+        <p class="hint">Every success his friends have is somehow his contribution. Every failure Disco has is somehow their fault.</p>
+        <p class="quote">"You went to Dubai? Good. I took you to Lahore. After that, international travel was basically inevitable."</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
 <script src="dist/samjs.js"></script>
 <script>
-  const opts = {debug: 1, pitch: 64, speed: 72, mouth: 128, throat: 128};
-  const presets = {
-    sam:               {speed: 72, pitch: 64, throat: 128, mouth: 128},
-    elf:               {speed: 72, pitch: 64, throat: 110, mouth: 160},
-    little_robot:      {speed: 92, pitch: 60, throat: 190, mouth: 190},
-    stuffy_guy:        {speed: 82, pitch: 72, throat: 110, mouth: 105},
-    little_old_lady:   {speed: 82, pitch: 32, throat: 145, mouth: 145},
-    extra_terrestrial: {speed: 100, pitch: 64, throat: 150, mouth: 200},
+(function () {
+  const voiceDefaults = { speed: 76, pitch: 58, throat: 138, mouth: 152 };
+  const surpriseTopics = [
+    "Disco goes to a job interview and starts interviewing the manager instead",
+    "Disco visits a doctor but tries to negotiate his weight instead of losing it",
+    "A friend buys a new car and Disco claims he created the idea of transport",
+    "Disco attends a wedding only for the food and accidentally becomes part of the family meeting",
+    "Disco gives investment advice while borrowing money for tea",
+    "Traffic police stop Disco even though he is not the person driving",
+    "Disco's friend gets a Canada visa and Disco traces the achievement back to their first Lahore trip",
+    "Disco tries to use artificial intelligence and becomes jealous of its employment status",
+    "Disco goes to a property dealer with no money and starts advising him on real estate",
+    "Disco explains cricket strategy after Pakistan loses, even though he misunderstood the score",
+    "Disco tries to impress an overseas Pakistani relative at a family dinner",
+    "Disco starts a business with no capital, no customers, and complete confidence"
+  ];
+
+  const els = {
+    topic: document.getElementById('topic'),
+    length: document.getElementById('length'),
+    spice: document.getElementById('spice'),
+    story: document.getElementById('story'),
+    generate: document.getElementById('generate'),
+    surprise: document.getElementById('surprise'),
+    copy: document.getElementById('copy'),
+    speak: document.getElementById('speak'),
+    stop: document.getElementById('stop'),
+    download: document.getElementById('download'),
+    status: document.getElementById('status')
   };
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('speechinput');
-    const controls = {};
+  const opts = { debug: 0, singmode: false, phonetic: false, ...voiceDefaults };
+  let activeSpeech = null;
+  let playbackToken = 0;
 
-    const setOpt = (name, value) => {
-      opts[name] = value;
-      controls[name].value = value;
-      document.getElementById(name + '-lbl').innerText = name.charAt(0).toUpperCase() + name.substring(1) + ': ' + value;
-    };
-    ['speed', 'pitch', 'mouth', 'throat'].forEach(
-      (name) => {
-        const e = document.getElementById(name);
-        controls[name] = e;
-        e.onchange = function (e) {
-          setOpt(e.target.id, e.target.value);
+  function setStatus(message) {
+    els.status.textContent = message || '';
+  }
 
-        };
-        e.value = opts[name];
+  function normalizeForSam(text) {
+    return String(text || '')
+      .replace(/[\u2018\u2019]/g, "'")
+      .replace(/[\u201C\u201D]/g, '"')
+      .replace(/[\u2013\u2014]/g, '-')
+      .replace(/…/g, '...')
+      .replace(/&/g, ' and ')
+      .replace(/[^\x20-\x7E\n]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function chunkForSpeech(text, maxLen) {
+    const clean = normalizeForSam(text);
+    const sentences = clean.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [clean];
+    const chunks = [];
+    let current = '';
+
+    sentences.forEach(function (sentence) {
+      const s = sentence.trim();
+      if (!s) return;
+      if ((current + ' ' + s).trim().length <= maxLen) {
+        current = (current + ' ' + s).trim();
+        return;
       }
-    );
-    const selectPreset = (name) => {
-      const values = presets[name];
-      ['speed', 'pitch', 'mouth', 'throat'].forEach((name) => {
-        setOpt(name, values[name]);
+      if (current) chunks.push(current);
+      if (s.length <= maxLen) {
+        current = s;
+        return;
+      }
+
+      const words = s.split(/\s+/);
+      current = '';
+      words.forEach(function (word) {
+        if ((current + ' ' + word).trim().length > maxLen && current) {
+          chunks.push(current);
+          current = word;
+        } else {
+          current = (current + ' ' + word).trim();
+        }
       });
-    };
-    selectPreset('sam');
-    Object.keys(presets).forEach((preset) => {
-      document.getElementById('preset_' + preset).addEventListener('click', () => selectPreset(preset));
     });
 
-    let speech;
-    document.getElementById('say').addEventListener('click', function (e) {
-      e.preventDefault();
-      if (speech) {
-        speech.abort();
+    if (current) chunks.push(current);
+    return chunks;
+  }
+
+  async function speakStory() {
+    stopPlayback();
+    const chunks = chunkForSpeech(els.story.value, 185);
+    if (!chunks.length) {
+      setStatus('Give Disco something to say first.');
+      return;
+    }
+
+    const token = ++playbackToken;
+    const sam = new SamJs(opts);
+    els.speak.disabled = true;
+    setStatus('Disco is talking...');
+
+    try {
+      for (let i = 0; i < chunks.length; i++) {
+        if (token !== playbackToken) return;
+        activeSpeech = sam.speak(chunks[i]);
+        await activeSpeech;
+        activeSpeech = null;
+        await new Promise(function (resolve) { setTimeout(resolve, 110); });
       }
-      speech = (new SamJs(opts)).speak(input.value);
-      speech.catch(() => {});
+      if (token === playbackToken) setStatus('Disco has finished his version of the truth.');
+    } catch (error) {
+      if (token === playbackToken) setStatus('Playback stopped.');
+    } finally {
+      if (token === playbackToken) els.speak.disabled = false;
+    }
+  }
+
+  function stopPlayback() {
+    playbackToken++;
+    if (activeSpeech && typeof activeSpeech.abort === 'function') {
+      try { activeSpeech.abort('stopped'); } catch (e) {}
+    }
+    activeSpeech = null;
+    els.speak.disabled = false;
+  }
+
+  async function generateStory() {
+    stopPlayback();
+    const topic = els.topic.value.trim();
+    els.generate.disabled = true;
+    els.surprise.disabled = true;
+    setStatus('Disco is remembering an incident. Accuracy is not guaranteed...');
+
+    try {
+      const response = await fetch('/api/disco-story', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: topic,
+          length: els.length.value,
+          spice: els.spice.value
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Could not generate a story.');
+      els.story.value = data.story;
+      setStatus('New incident generated. Now let Disco tell it.');
+    } catch (error) {
+      setStatus(error.message + ' If you opened index.html directly, deploy the project with the /api function first.');
+    } finally {
+      els.generate.disabled = false;
+      els.surprise.disabled = false;
+    }
+  }
+
+  function bindVoiceControl(name) {
+    const range = document.getElementById(name);
+    const output = document.getElementById(name + 'Value');
+    range.addEventListener('input', function () {
+      opts[name] = Number(range.value);
+      output.value = range.value;
     });
-    document.getElementById('download').addEventListener('click', function (e) {
-      e.preventDefault();
-      (new SamJs(opts)).download(input.value);
+  }
+
+  ['speed', 'pitch', 'throat', 'mouth'].forEach(bindVoiceControl);
+
+  document.getElementById('resetVoice').addEventListener('click', function () {
+    Object.keys(voiceDefaults).forEach(function (name) {
+      opts[name] = voiceDefaults[name];
+      document.getElementById(name).value = voiceDefaults[name];
+      document.getElementById(name + 'Value').value = voiceDefaults[name];
     });
   });
+
+  els.generate.addEventListener('click', generateStory);
+  els.surprise.addEventListener('click', function () {
+    els.topic.value = surpriseTopics[Math.floor(Math.random() * surpriseTopics.length)];
+    generateStory();
+  });
+  els.copy.addEventListener('click', async function () {
+    try {
+      await navigator.clipboard.writeText(els.story.value);
+      setStatus('Script copied.');
+    } catch (e) {
+      els.story.select();
+      document.execCommand('copy');
+      setStatus('Script copied.');
+    }
+  });
+  els.speak.addEventListener('click', speakStory);
+  els.stop.addEventListener('click', function () {
+    stopPlayback();
+    setStatus('Playback stopped.');
+  });
+  els.download.addEventListener('click', function () {
+    const text = normalizeForSam(els.story.value);
+    if (!text) return setStatus('Give Disco something to say first.');
+    try {
+      (new SamJs(opts)).download(text);
+      setStatus('WAV download started.');
+    } catch (e) {
+      setStatus('This story may be too long for one WAV. Try the Short setting.');
+    }
+  });
+})();
 </script>
-
-<hr>
-<form>
-  <h2>Speak</h2>
-  <div>
-    <label for="speechinput">Text to speak:</label>
-    <input size="60" id="speechinput" name="textfield" value="Hello, my name is SAM.">
-  <hr>
-    <label id="pitch-lbl" for="pitch">Pitch:   </label><input type="range" id="pitch" min="0" max="255" value="0" />
-    <label id="speed-lbl" for="speed">Speed:   </label><input type="range" id="speed" min="1" max="255" value="0" />
-    <label id="mouth-lbl" for="mouth">Mouth:   </label><input type="range" id="mouth" min="0" max="255" value="0" />
-    <label id="throat-lbl" for="throat">Throat: </label><input type="range" id="throat" min="0" max="255" value="0" />
-    <input type="button" id="say" value="Say">
-    <input type="button" id="download" value="Download">
-  </div>
-  <hr>
-  <h2>Presets</h2>
-  <table>
-    <thead>
-      <tr><th>Description</th><th>Speed</th><th>Pitch</th><th>Throat</th><th>Mouth</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><a id="preset_sam">SAM</a></td><td>72</td><td>64</td><td>128</td><td>128</td></tr>
-      <tr><td><a id="preset_elf">Elf</a></td><td>72</td><td>64</td><td>110</td><td>160</td></tr>
-      <tr><td><a id="preset_little_robot">Little Robot</a></td><td>92</td><td>60</td><td>190</td><td>190</td></tr>
-      <tr><td><a id="preset_stuffy_guy">Stuffy Guy</a></td><td>82</td><td>72</td><td>110</td><td>105</td></tr>
-      <tr><td><a id="preset_little_old_lady">Little Old Lady</a></td><td>82</td><td>32</td><td>145</td><td>145</td></tr>
-      <tr><td><a id="preset_extra_terrestrial">Extra-Terrestrial</a></td><td>100</td><td>64</td><td>150</td><td>200</td></tr>
-    </tbody>
-  </table>
-</form>
-<hr>
-
-<a href="https://github.com/discordier/sam">Github Repository with the source code</a>
 </body>
 </html>
