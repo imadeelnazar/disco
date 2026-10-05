@@ -1,3 +1,6 @@
 /node_modules/
 /gh-pages
 /*.tgz
+.env
+.env.*
+!.env.example
